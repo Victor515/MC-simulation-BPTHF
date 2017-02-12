@@ -1,27 +1,28 @@
-function calculate()
+function [Mn,Mw,PDI,weight] = calculate()
 %calculate molecular weight
 global POLYMER;
 [Mn,Mw,PDI,weight] = mw_calculate(POLYMER);
 end
 
 function [Mn,Mw,PDI,weight] = mw_calculate(polymer)
-polymer_num = 1; %record the number of every single molecule
-weight = zeros(2000); %pre-allocate memory for weight vector
-for i = 1:2000
-    if chain(i).chain_inserting == 0 %start from the chain that did not insert into any other chain
-        weight(polymer_num) = weight_calculate(i);
-        polymer_num = polymer_num + 1;
+global chain;
+polymer_temp = polymer;
+weight = zeros(1,2000);
+%delete all empty cells in polymer_temp, the length of remaining cell
+%arrays is the number of polymer chains
+polymer_temp(cellfun(@isempty,polymer_temp)) = [];
+
+%calculate molecular weight of each chain, assume chains are terminated by
+%water
+for i = 1:length(polymer_temp)
+    for j = 1:length(polymer_temp{i})
+        weight(i) = weight(i) + 160 + chain(j).inserted_THF * 72;
     end
-end
 end
 
-function weight = weight_calculate(serial)
-global chain;
-weight = chain(serial).inserted_THF * THF_weight;
-if ~isempty(chain(serial).inserted_chain_serial) %determine whether there is any branching point
-    len = length(chain(serial).inserted_chain_serial);
-    for j = 1:len
-         weight = weight + weight_calculate(chain(serial).inserted_chain_serial(j));%recursion
-    end
+%calculate Mn, Mw and PDI
+Mn = sum(weight) / length(weight);
+Mw = weight * weight'/ sum(weight);
+PDI = Mw / Mn;
 end
-end
+

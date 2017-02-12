@@ -12,7 +12,7 @@ global POLYMER
 POLYMER = cell(1,2000);
 
 polynum = 1; %a variable to count polymer chains generated
-while conversion < 0.8
+while conversion < 0.4
 %choose the chain to be propagated
 chain_serial = choose_chain(length(chain)); 
 
@@ -43,8 +43,6 @@ switch reaction_type
                     POLYMER{chain(chain_serial_ins).polymer_num} = [POLYMER{chain(chain_serial_ins).polymer_num},chain_serial];
                     chain(chain_serial).polymer_num = chain(chain_serial_ins).polymer_num;
             elseif (chain(chain_serial_ins).polymer_num == 0 && chain(chain_serial).polymer_num ~= 0) %if inserted chain belongs to any polymer, while inserting chain does not
-                    chain(chain_serial).polymer_num
-                    POLYMER{chain(chain_serial).polymer_num}
                     POLYMER{chain(chain_serial).polymer_num} = [POLYMER{chain(chain_serial).polymer_num},chain_serial_ins];
                     chain(chain_serial_ins).polymer_num = chain(chain_serial).polymer_num;
             else    %if both chains belong to any polymer, union all records and store in polymer of inserted chain, delete polymer of inserting chain
@@ -79,8 +77,8 @@ end
 %calculate characterization parameters
 %calculate();
 conversion = (initial_THF - THF_NUM) / initial_THF;
-% conversion
-% EGDE_NUM
+conversion
+EGDE_NUM
 end
 
 end

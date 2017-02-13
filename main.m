@@ -1,4 +1,4 @@
-function main()
+function [Mn,Mw,PDI] = main()
 % set reaction rate constant ratio, kTHF: kPO
 global RATE_RATIO
 RATE_RATIO = 1/2;
@@ -34,6 +34,6 @@ rng('shuffle'); %generate different random sequence
 reaction();
 
 %demonstrate final results
-result();
+[Mn, Mw, PDI] = result();
 
 

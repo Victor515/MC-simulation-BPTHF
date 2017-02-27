@@ -6,12 +6,21 @@ initial_THF = THF_NUM;
 initial_EGDE = length(chain);
 conversion = (initial_THF - THF_NUM) / initial_THF;
 
+%set up arrays to record instant values
+global conversion_record;%record instant conversion rate 
+global MW_record;%record instant Molecular weight
+conversion_record = zeros(1,100000);
+MW_record = zeros(1,100000);
+
 % set up a cell array POLYMER,to record branched structures and calculate
 % molecular weight
 global POLYMER
 POLYMER = cell(1,2000);
 
-polynum = 1; %a variable to count polymer chains generated
+% set up an array to record all cyclized polymer
+global CYCL_POLYMER
+
+polynum = 1; %a variable to count POLYMER chains generated
 while conversion < 0.4
 %choose the chain to be propagated
 chain_serial = choose_chain(length(chain)); 
@@ -34,7 +43,7 @@ switch reaction_type
             chain_serial_ins = select_chain(length(chain));
             
             %modify POLYMER
-            if (chain(chain_serial).polymer_num == 0 && chain(chain_serial_ins).polymer_num == 0) %if inserted and inserting chains neither belong to any polymer
+            if (chain(chain_serial).polymer_num == 0 && chain(chain_serial_ins).polymer_num == 0) %if neither of inserted and inserting chain belongs to any polymer
                     POLYMER{polynum} = [chain_serial,chain_serial_ins];
                     chain(chain_serial).polymer_num = polynum;
                     chain(chain_serial_ins).polymer_num = polynum;
@@ -52,9 +61,10 @@ switch reaction_type
                         temp_poly_num = chain(chain_serial_ins).polymer_num;
                         for i = POLYMER{temp_poly_num}
                             chain(i).polymer_num = chain(chain_serial).polymer_num;
-                            chain(i).polymer_num
                         end
                         POLYMER{temp_poly_num} = [];
+                    else
+                        CYCL_POLYMER = [CYCL_POLYMER, chain(chain_serial).polymer_num];
                     end
             end
             
@@ -75,10 +85,12 @@ switch reaction_type
 end
 
 %calculate characterization parameters
-%calculate();
 conversion = (initial_THF - THF_NUM) / initial_THF;
 conversion
-EGDE_NUM
+% record instant conversion and MW record
+% conversion_record = [conversion_record,conversion]; 
+% [~,Mw] = calculate();
+% MW_record = [MW_record,Mw];
 end
 
 end

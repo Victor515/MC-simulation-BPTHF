@@ -1,4 +1,4 @@
-function [Mn,Mw,PDI] = main()
+function [Mn, Mw, PDI,T_unit,DB] = main()
 % set reaction rate constant ratio, kTHF: kPO
 global RATE_RATIO
 RATE_RATIO = 1/2;
@@ -34,6 +34,8 @@ rng('shuffle'); %generate different random sequence
 reaction();
 
 %demonstrate final results
-[Mn, Mw, PDI] = result();
+[Mn, Mw, PDI,T_unit,DB] = result();
+mean(T_unit) % average number of terminal units per chain
+mean(DB) % average degree of branching 
 
 

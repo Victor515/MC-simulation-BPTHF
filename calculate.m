@@ -34,7 +34,7 @@ function [T_unit,D_unit,L_unit,DB,dist_to_core] = db_calculate(chain,polymer)
 polymer_temp = polymer;
 
 %delete all empty cells in polymer_temp, the length of remaining cell
-%arrays is the number of polymer chains
+%array is the number of polymer chains
 polymer_temp(cellfun(@isempty,polymer_temp)) = [];
 
 %delete all cyclized polymer in polymer_temp
@@ -73,15 +73,16 @@ end
 
 % remove cycled polymers
 function polymer = cycle_rm(polymer_temp)
-cycle_polymer = [];
+cycle_polymer = []; %create a list to record all serial numbers of cycled polymers
 for i = 1:length(polymer_temp)
     if iscycle(polymer_temp{i})
         cycle_polymer = [cycle_polymer, i];
     end
 end
 for k = cycle_polymer
-    polymer_temp(k) = [];
+    polymer_temp{k} = [];
 end
+polymer_temp(cellfun(@isempty,polymer_temp)) = [];
 polymer = polymer_temp;
 end
 

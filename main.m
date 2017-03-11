@@ -34,8 +34,9 @@ rng('shuffle'); %generate different random sequence
 reaction();
 
 %demonstrate final results
-[Mn, Mw, PDI,T_unit,DB] = result();
+[Mn, Mw, PDI,T_unit,DB,dist_to_core] = result();
 mean(T_unit) % average number of terminal units per chain
-mean(DB) % average degree of branching 
+mean(DB) % average degree of branching
+mean(dist_to_core) % average distance to the core
 
 

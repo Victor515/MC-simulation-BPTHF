@@ -1,4 +1,4 @@
-function [Mn,Mw,PDI,T_unit,DB] = result()
+function [Mn,Mw,PDI,T_unit,DB,dist_to_core] = result()
 global chain;
 global conversion_record;
 for i = 1:length(chain)
@@ -11,13 +11,14 @@ title('THF num distribution');
 figure(2);
 hist(b,0:10);
 title('Branching point num distribution');
-[Mn,Mw,PDI,weight,T_unit,DB] = calculate();
+[Mn,Mw,PDI,weight,T_unit,DB,dist_to_core] = calculate();
 figure(3);
 weight = weight(weight ~= 0);
 hist(weight,10);
 title('weight distribution');
 length(weight);
-figure(4);
-global MW_record;
-plot(conversion_record,MW_record);%plot Molecular weight(weight average) versus conversion
+% figure(4);
+% global MW_record;
+% plot(conversion_record,MW_record);%plot Molecular weight(weight average) versus conversion
+
 

@@ -1,4 +1,4 @@
-function [Mn,Mw,PDI,T_unit,DB,dist_to_core] = result()
+function [Mn,Mw,PDI,weight,T_unit,DB,dist_to_core] = result()
 global chain;
 global conversion_record;
 for i = 1:length(chain)
@@ -16,9 +16,12 @@ figure(3);
 weight = weight(weight ~= 0);
 hist(weight,10);
 title('weight distribution');
-length(weight);
 % figure(4);
 % global MW_record;
 % plot(conversion_record,MW_record);%plot Molecular weight(weight average) versus conversion
+figure(5);
+global DB_record;
+plot(conversion_record,DB_record);
+title('支化度随转化率变化');
 
 

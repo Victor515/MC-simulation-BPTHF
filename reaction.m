@@ -28,7 +28,7 @@ POLYMER = cell(1,2000);
 % CYCL_POLYMER = [];
 
 polynum = 1; %a variable to count POLYMER chains generated
-while conversion < 0.4
+while conversion < 0.794
 %choose the chain to be propagated
 chain_serial = choose_chain(length(chain)); 
 
@@ -103,14 +103,14 @@ end
 %calculate characterization parameters
 conversion = (initial_THF - THF_NUM) / initial_THF;
 conversion
-% % record instant conversion and parameters
-% if ismember(conversion,[0.05,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8])
-% conversion_record = [conversion_record,conversion]; 
-% [Mn,Mw,PDI,weight,T_unit,DB,dist_to_core] = calculate();
-% T_unit_record = [T_unit_record,mean(T_unit)];
-% DB_record = [DB_record, mean(DB)];
-% dist_to_core_record = [dist_to_core_record, mean(dist_to_core)];
-% end
+% record instant conversion and parameters
+if ismember(conversion,[0.05,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8])
+conversion_record = [conversion_record,conversion]; 
+[Mn,Mw,PDI,weight,T_unit,DB,dist_to_core] = calculate();
+T_unit_record = [T_unit_record,mean(T_unit)];
+DB_record = [DB_record, mean(DB)];
+dist_to_core_record = [dist_to_core_record, mean(dist_to_core)];
+end
 end
 
 end

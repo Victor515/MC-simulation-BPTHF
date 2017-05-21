@@ -27,5 +27,7 @@ global DB_record;
 plot(conversion_record,DB_record);
 title('支化度随转化率变化');
 %% 
+figure(6);
+gpcplot(weight,3);
 
 

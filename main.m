@@ -1,4 +1,19 @@
 function [Mn, Mw, PDI,avg_T, avg_DB, DB] = main(rate_ratio, feed_ratio,conversion)
+%------------------------------------------
+%Input:
+%rate_ratio: reaction rate ratio, Kthf:Kegde
+%feed_ratio: EGDE:THF
+%conversion: final conversion where the reaction is terminated
+%------------------------------------------
+%output:
+% Mn: Number average molecular weight
+% Mw: Weight average molecular weight
+% PDI: Polymer dispersity index
+% avg_T: Average terminal units per chain
+% avg_DB: Average degree of branching per chain
+% DB: Degree of branching, recorded by every chain
+
+
 % set reaction rate constant ratio, kTHF: kPO
 global RATE_RATIO
 RATE_RATIO = rate_ratio;

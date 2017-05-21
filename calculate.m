@@ -21,7 +21,11 @@ polymer_temp(cellfun(@isempty,polymer_temp)) = [];
 %water
 for i = 1:length(polymer_temp)
     for j = 1:length(polymer_temp{i})
-        weight(i) = weight(i) + 160 + chain(j).inserted_THF * 72;
+        weight(i) = weight(i) + 160 + chain(polymer_temp{i}(j))...
+            .inserted_THF * 72;
+        %chain number is wrong, it should be number of chain compose the
+        %polymer. In origin version it repeat calculating the front several
+        %chain
     end
 end
 

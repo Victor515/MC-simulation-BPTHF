@@ -22,7 +22,8 @@ RATE_RATIO = rate_ratio;
 global FEED_RATIO %EGDE:THF
 FEED_RATIO = feed_ratio;
 global EGDE_NUM
-EGDE_NUM = 2000;
+EGDE_NUM = 20000;
+% it's found that larger chain number result in a smoother GPC plot
 global THF_NUM
 THF_NUM = EGDE_NUM / FEED_RATIO;
 

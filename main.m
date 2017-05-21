@@ -1,13 +1,15 @@
-function [Mn, Mw, PDI,avg_T, avg_DB] = main()
+function [Mn, Mw, PDI,avg_T, avg_DB, DB] = main(rate_ratio, feed_ratio,conversion)
 % set reaction rate constant ratio, kTHF: kPO
 global RATE_RATIO
-RATE_RATIO = 1/0.2;
+RATE_RATIO = rate_ratio;
 
 %set reactant numbers, EGDE and THF
+global FEED_RATIO %EGDE:THF
+FEED_RATIO = feed_ratio;
 global EGDE_NUM
 EGDE_NUM = 2000;
 global THF_NUM
-THF_NUM = 2000*EGDE_NUM/3;
+THF_NUM = EGDE_NUM / FEED_RATIO;
 
 % represent EGDE chains using structure arrays
 % inserted_THF -- how many THF are in chain i
@@ -31,10 +33,10 @@ end
 %conduct reactions, record parameters
 rng('default');
 rng('shuffle'); %generate different random sequence
-reaction();
+reaction(conversion);
 
 %demonstrate final results
-[Mn, Mw, PDI,T_unit,DB,dist_to_core,weight] = result();
+[Mn,Mw,PDI,weight,T_unit,DB,dist_to_core] = result();
 avg_T = mean(T_unit); % average number of terminal units per chain
 avg_DB =  mean(DB); % average degree of branching
 % mean(dist_to_core) % average distance to the core

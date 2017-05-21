@@ -3,6 +3,8 @@ function [Mn,Mw,PDI,weight,T_unit,DB,dist_to_core] = calculate()
 global POLYMER;
 global chain;
 [Mn,Mw,PDI,weight] = mw_calculate(POLYMER);
+
+%calculate DB parameters
 [T_unit,D_unit,L_unit,DB,dist_to_core] = db_calculate(chain,POLYMER);
 end
 

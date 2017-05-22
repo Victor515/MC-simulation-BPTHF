@@ -49,12 +49,10 @@ switch reaction_type
             %select the inserting chain
             chain_serial_ins = select_chain(length(chain));
             
-%             if (chain_serial == chain_serial_ins && chain(chain_serial).polymer_num ~= 0)
-%                 CYCL_POLYMER = [CYCL_POLYMER, chain(chain_serial).polymer_num];
-%             end
+
             %modify POLYMER
             if (chain(chain_serial).polymer_num == 0 && chain(chain_serial_ins).polymer_num == 0) %if neither of inserted and inserting chain belongs to any polymer
-                if chain_serial ~= chain_serial_ins
+                if chain_serial ~= chain_serial_ins % check whether inserting and inserted chains are actually one chain or not
                     POLYMER{polynum} = [chain_serial,chain_serial_ins];
                     chain(chain_serial).polymer_num = polynum;
                     chain(chain_serial_ins).polymer_num = polynum;
@@ -62,7 +60,7 @@ switch reaction_type
                     POLYMER{polynum} = chain_serial;
                     chain(chain_serial).polymer_num = polynum;
                     chain(chain_serial_ins).polymer_num = polynum;
-%                     CYCL_POLYMER = [CYCL_POLYMER, chain(chain_serial).polymer_num];
+
                 end
                 polynum = polynum + 1;
             elseif (chain(chain_serial).polymer_num == 0 && chain(chain_serial_ins).polymer_num ~= 0) %if inserting chain belongs to any polymer, while inserted chain does not
@@ -79,8 +77,6 @@ switch reaction_type
                             chain(i).polymer_num = chain(chain_serial).polymer_num;
                         end
                         POLYMER{temp_poly_num} = [];
-%                     else % if a chain inserts into itself, a cycle will form in the polymer the chain belong to
-%                         CYCL_POLYMER = [CYCL_POLYMER, chain(chain_serial).polymer_num];
                     end
             end
             
@@ -110,6 +106,15 @@ conversion
 % T_unit_record = [T_unit_record,mean(T_unit)];
 % DB_record = [DB_record, mean(DB)];
 % dist_to_core_record = [dist_to_core_record, mean(dist_to_core)];
+end
+
+%create a loop over chain data structure, add linear polymer to the POLYMER
+%data structure
+for i = 1:length(chain)
+    if chain(i).polymer_num == 0 %if the chain does not belong to any POLYMER
+        POLYMER{polynum} = i;
+        polynum = polynum + 1;
+    end
 end
 end
 

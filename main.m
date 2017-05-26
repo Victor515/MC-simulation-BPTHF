@@ -1,4 +1,4 @@
-function [Mn, Mw, PDI,avg_T, avg_DB, DB] = main(rate_ratio, feed_ratio,conversion)
+function [Mn, Mw, PDI,weight,T_unit, avg_T, avg_DB, DB, dist_to_core, avg_DTC] = main(rate_ratio, feed_ratio,conversion)
 %------------------------------------------
 %Input:
 %rate_ratio: reaction rate ratio, Kthf:Kegde
@@ -9,9 +9,13 @@ function [Mn, Mw, PDI,avg_T, avg_DB, DB] = main(rate_ratio, feed_ratio,conversio
 % Mn: Number average molecular weight
 % Mw: Weight average molecular weight
 % PDI: Polymer dispersity index
+% weight: molecular weight of every polymer chain
+% T_unit: Terminal units of every polymer chain
 % avg_T: Average terminal units per chain
 % avg_DB: Average degree of branching per chain
 % DB: Degree of branching, recorded by every chain
+% dist_to_core: distance to the core of every chain
+% avg_DTC: average distance to the core
 
 
 % set reaction rate constant ratio, kTHF: kPO
@@ -54,6 +58,6 @@ reaction(conversion);
 [Mn,Mw,PDI,weight,T_unit,DB,dist_to_core] = result();
 avg_T = mean(T_unit); % average number of terminal units per chain
 avg_DB =  mean(DB); % average degree of branching
-% mean(dist_to_core) % average distance to the core
+avg_DTC = mean(dist_to_core); % average distance to the core
 
 

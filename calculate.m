@@ -26,6 +26,7 @@ for i = 1:length(polymer_temp)
 end
 
 %calculate Mn, Mw and PDI
+weight = weight(weight ~= 0);
 Mn = sum(weight) / length(weight);
 Mw = weight * weight'/ sum(weight);
 PDI = Mw / Mn;
@@ -39,8 +40,8 @@ polymer_temp = polymer;
 %array is the number of polymer chains
 polymer_temp(cellfun(@isempty,polymer_temp)) = [];
 
-%delete all cyclized polymer in polymer_temp
-polymer_temp = cycle_rm(polymer_temp);
+% %delete all cyclized polymer in polymer_temp
+polymer_temp = cycle_rm(polymer_temp); %create a new data structure, only used for calculating dist_to_core
 
 DB = zeros(1,length(polymer_temp));
 T_unit = zeros(1,length(polymer_temp));
@@ -58,19 +59,22 @@ for i = 1:length(polymer_temp)
     end
     DB(i) = (T_unit(i) + D_unit(i)) / (T_unit(i) + D_unit(i) + L_unit(i));
     
+    
     % calculate avg distance to core for every polymer chain
     for k = polymer_temp{i}
         index = k;
-        count = 0; % count number of branching point traversed
+        n = 1;
+        count(n) = 0; % count number of branching point traversed
         while chain(index).chain_inserting ~= 0
-            count = count + 1;
+            count(n) = count(n) + 1;
             index = chain(index).chain_inserting;
         end
+        n = n + 1;
     end
-    dist_to_core(i) = count;
+    dist_to_core(i) = mean(count);
             
 end
-    
+%     dist_to_core = dist_to_core(dist_to_core ~= 0);
 end
 
 % remove cycled polymers

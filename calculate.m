@@ -57,7 +57,7 @@ for i = 1:length(polymer_temp)
     for j = 1:length(polymer_temp{i})
         L_unit(i) = chain(polymer_temp{i}(j)).inserted_THF + L_unit(i);
     end
-    DB(i) = (T_unit(i) + D_unit(i)) / (T_unit(i) + D_unit(i) + L_unit(i));
+    DB(i) = (T_unit(i)/2 + T_unit(i)) / (T_unit(i)/2 + T_unit(i) + L_unit(i)/4 + D_unit(i));
     
     
     % calculate avg distance to core for every polymer chain

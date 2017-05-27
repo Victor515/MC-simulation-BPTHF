@@ -2,6 +2,7 @@ function [Mn,Mw,PDI,weight,T_unit,DB,dist_to_core] = calculate()
 %calculate molecular weight
 global POLYMER;
 global chain;
+
 [Mn,Mw,PDI,weight] = mw_calculate(POLYMER);
 
 %calculate DB parameters

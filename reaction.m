@@ -24,6 +24,10 @@ if record_instant_value
     DB_record = [];
     global dist_to_core_record;
     dist_to_core_record = [];
+    global sampling_point;
+    sampling_point = 0.05; %set sampling start point
+    global sampling_step;
+    sampling_step = 0.02; % set sampling step
 end
 
 % set up a cell array POLYMER,to record branched structures and calculate
@@ -32,12 +36,12 @@ global POLYMER
 POLYMER = cell(1,2000);
 
 
-polynum = 1; %a variable to count POLYMER chains generated
+polynum = 1; %a variable to count POLYMER chains generated 
 while conversion < conversion_set
     %choose the chain to be propagated
     chain_serial = choose_chain(length(chain));
     
-    %decide the reaction type(THF or EGDE insertion) for the chosen chain, modify relevant parameters based on
+    %dide the reaction type(THF or EGDE insertion) for the chosen chain, modify relevant parameters based on
     %the reaction
     reaction_type = choose_reaction(length(chain));
     switch reaction_type
@@ -106,31 +110,26 @@ while conversion < conversion_set
     conversion
     
     if record_instant_value
+        if conversion > sampling_point
         % record instant conversion and parameters
-        conversion = roundn(conversion, -4);
-        if ismember(conversion, 0.05:0.02:0.79);
             conversion_record = [conversion_record,conversion];
+            add_linear(polynum);
             [Mn,Mw,PDI,weight,T_unit,DB,dist_to_core] = calculate();
+            undo_linear();
             Mn_record = [Mn_record,Mn];
             Mw_record = [Mw_record,Mw];
             PDI_record = [PDI_record,PDI];
             T_unit_record = [T_unit_record,mean(T_unit)];
             DB_record = [DB_record, mean(DB)];
             dist_to_core_record = [dist_to_core_record, mean(dist_to_core)];
+            sampling_point = sampling_point + sampling_step;
         end
     end
 end
 
-%create a loop over chain data structure, add linear polymer to the POLYMER
-%data structure
-for i = 1:length(chain)
-    if chain(i).polymer_num == 0 %if the chain does not belong to any POLYMER
-        POLYMER{polynum} = i;
-        polynum = polynum + 1;
-    end
-end
-end
+add_linear(polynum);
 
+end
 % end
 
 
@@ -165,6 +164,30 @@ if r > EGDE_NUM * chain_num / (EGDE_NUM*chain_num + RATE_RATIO * THF_NUM * chain
 else
     reaction_type = 1; %A EGDE-PO is inserted
 end
+end
+
+function add_linear(polynum)
+%temporarily add linear chain
+global POLYMER_temp;
+global POLYMER;
+global chain;
+POLYMER_temp = POLYMER;
+
+%create a loop over chain data structure, add linear polymer to the POLYMER
+%data structure
+for i = 1:length(chain)
+    if chain(i).polymer_num == 0 %if the chain does not belong to any POLYMER
+        POLYMER{polynum} = i;
+        polynum = polynum + 1;
+    end
+end
+end
+
+function undo_linear()
+%reverse the change in add_linear
+global POLYMER_temp;
+global POLYMER;
+POLYMER = POLYMER_temp;
 end
 
 

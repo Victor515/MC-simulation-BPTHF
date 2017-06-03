@@ -29,6 +29,7 @@ global EGDE_NUM
 EGDE_NUM = 2000;
 global THF_NUM
 THF_NUM = EGDE_NUM / FEED_RATIO;
+init_eff = 1; %initiation efficiency is set to 1 as default
 
 % represent EGDE chains using structure arrays
 % inserted_THF -- how many THF are in chain i
@@ -40,7 +41,7 @@ THF_NUM = EGDE_NUM / FEED_RATIO;
 % polymer_num -- records the number of the polymer the chain belongs to, one chain
 % could only belong to one polymer
 global chain;
-for i = 1:EGDE_NUM
+for i = 1:EGDE_NUM * init_eff
     chain(i).inserted_THF = 0;
     chain(i).inserted_chain_pos = [];
     chain(i).inserted_chain_serial = [];

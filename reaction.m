@@ -6,7 +6,7 @@ initial_THF = THF_NUM;
 initial_EGDE = length(chain);
 conversion = (initial_THF - THF_NUM) / initial_THF;
 global record_instant_value;
-record_instant_value = true; % a boolean value to decide whether to record instant value during the reaction
+record_instant_value = false; % a boolean value to decide whether to record instant value during the reaction
 
 if record_instant_value
     %set up arrays to record instant values
@@ -20,6 +20,10 @@ if record_instant_value
     PDI_record = [];
     global T_unit_record;
     T_unit_record = [];
+    global D_unit_record;
+    D_unit_record = [];
+    global L_unit_record;
+    L_unit_record = [];
     global DB_record;
     DB_record = [];
     global dist_to_core_record;
@@ -114,7 +118,7 @@ while conversion < conversion_set
         % record instant conversion and parameters
             conversion_record = [conversion_record,conversion];
             add_linear(polynum);
-            [Mn,Mw,PDI,weight,T_unit,DB,dist_to_core] = calculate();
+            [Mn,Mw,PDI,weight,T_unit,DB,dist_to_core,D_unit,L_unit] = calculate();
             undo_linear();
             Mn_record = [Mn_record,Mn];
             Mw_record = [Mw_record,Mw];
@@ -122,13 +126,16 @@ while conversion < conversion_set
             T_unit_record = [T_unit_record,mean(T_unit)];
             DB_record = [DB_record, mean(DB)];
             dist_to_core_record = [dist_to_core_record, mean(dist_to_core)];
+            D_unit_record = [D_unit_record,mean(D_unit)];
+            L_unit_record = [L_unit_record,mean(L_unit)];
             sampling_point = sampling_point + sampling_step;
         end
     end
 end
-
-add_linear(polynum);
-
+global branched_num;
+branched_num = polynum; %number of branched polymer
+global total_num; %total number of polymer
+total_num = add_linear(polynum);
 end
 % end
 
@@ -166,7 +173,7 @@ else
 end
 end
 
-function add_linear(polynum)
+function tot_num = add_linear(polynum)
 %temporarily add linear chain
 global POLYMER_temp;
 global POLYMER;
@@ -180,6 +187,7 @@ for i = 1:length(chain)
         POLYMER{polynum} = i;
         polynum = polynum + 1;
     end
+    tot_num = polynum;
 end
 end
 

@@ -25,14 +25,11 @@ global record_instant_value;
 if record_instant_value
     figure(4);
     global Mw_record;
-    plot(conversion_record,Mw_record);%plot Molecular weight(weight average) versus conversion
-    xlabel('转化率');
-    ylabel('重均分子量');
-    figure(5);
     global Mn_record;
-    plot(conversion_record,Mn_record);%plot Molecular weight(number average) versus conversion
+    plot(conversion_record,Mw_record,'-r',conversion_record,Mn_record);%plot Molecular weight(weight average) versus conversion
     xlabel('转化率');
-    ylabel('数均分子量');
+    ylabel('分子量');
+    legend('重均','数均');
     figure(6);
     global PDI_record;
     plot(conversion_record,PDI_record);%plot Molecular weight(weight average) versus conversion
@@ -52,7 +49,7 @@ if record_instant_value
     global dist_to_core_record;
     plot(conversion_record,dist_to_core_record);
     xlabel('转化率');
-    ylabel('末端到核心距离');
+    ylabel('支化深度');
 end
 %% 
 figure(10);

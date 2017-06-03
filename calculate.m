@@ -1,7 +1,8 @@
-function [Mn,Mw,PDI,weight,T_unit,DB,dist_to_core] = calculate()
+function [Mn,Mw,PDI,weight,T_unit,DB,dist_to_core,D_unit,L_unit] = calculate()
 %calculate molecular weight
 global POLYMER;
 global chain;
+
 
 [Mn,Mw,PDI,weight] = mw_calculate(POLYMER);
 
@@ -11,6 +12,7 @@ end
 
 function [Mn,Mw,PDI,weight] = mw_calculate(polymer)
 global chain;
+
 polymer_temp = polymer;
 weight = zeros(1,2000);
 
@@ -58,10 +60,10 @@ for i = 1:length(polymer_temp)
     for j = 1:length(polymer_temp{i})
         L_unit(i) = chain(polymer_temp{i}(j)).inserted_THF + L_unit(i);
     end
-    DB(i) = (T_unit(i)/2 + T_unit(i)) / (T_unit(i)/2 + T_unit(i) + L_unit(i)/4 + D_unit(i));
+    DB(i) = (D_unit(i) + T_unit(i)) / (D_unit(i) + T_unit(i) + L_unit(i));
     
     
-    % calculate avg distance to core for every polymer chain
+    % calculate max distance to core for every polymer chain
     for k = polymer_temp{i}
         index = k;
         n = 1;
@@ -72,7 +74,7 @@ for i = 1:length(polymer_temp)
         end
         n = n + 1;
     end
-    dist_to_core(i) = mean(count);
+    dist_to_core(i) = max(count);
             
 end
 %     dist_to_core = dist_to_core(dist_to_core ~= 0);
